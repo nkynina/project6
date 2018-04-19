@@ -1,4 +1,3 @@
-
 var board;
 function start() {
 	board= new Board(10);
@@ -21,6 +20,8 @@ function handleKeys(event) {
 		break;
 		case "ArrowLeft": left();
 		break;
+		case "Enter": board.resetMove();
+		break;
 	}
 	draw(board);
 } 
@@ -42,6 +43,7 @@ function draw(board) {
 	for (var i=0;i<board.map.length;i++) {
 		for (var j=0;j<board.map.length;j++) {
 			var box = document.createElement("div");
+			box.innerHTML = "&nbsp;";
 			if (board.map[i][j]==board.GRASS){box.setAttribute("class", "box grass");}
 			else if (board.map[i][j]==board.STONE) {box.setAttribute("class", "box stone");}
 			else if (board.map[i][j]==board.WEAPON1) {box.setAttribute("class", "box weapon1");}
@@ -65,18 +67,26 @@ function up(){
 			board.increaseMove();
 		} 
 		else if (board.map[x-1][y]>=board.WEAPON1 && board.map[x-1][y]<=board.WEAPON3) {
-			board.currentPlayer.weapon=board.weapons[board.map[x-1][y]];
-			board.map[x-1][y]=board.currentPlayer.id;
-			board.currentPlayer.setPosition(x-1,y);
-			board.map[x][y]=board.GRASS;
-			board.increaseMove();
+			if (board.currentPlayer.weapon.id == -1) {
+				board.currentPlayer.weapon=board.weapons[board.map[x-1][y]];
+				board.map[x-1][y]=board.currentPlayer.id;
+				board.currentPlayer.setPosition(x-1,y);
+				board.map[x][y]=board.GRASS;
+				board.increaseMove();
+			} 
+			else {
+				board.map[x][y]=board.WEAPONS[board.currentPlayer.weapon.id]; //let current map to have the current weapon
+				board.currentPlayer.weapon=board.weapons[board.map[x-1][y]]; //let player to get the next weapon
+				board.map[x-1][y]=board.currentPlayer.id; // currentplayer moves
+				board.currentPlayer.setPosition(x-1,y); //let currentplayer position
+				board.increaseMove();
+			}
+			
 		}
-		else if(board.currentPlayer.weapon.id!== -1) { // id not equal to -1 means weapon exits
-			board.map[x][y]=board.weapons[board.currentPlayer.weapon.id]; //let current map to have the current weapon
-			board.currentPlayer.weapon=board.weapons[board.map[x-1][y]]; //let player to get the next weapon
-			board.map[x-1][y]=board.currentPlayer.id; // currentplayer moves
-			board.currentPlayer.setPosition(x-1,y); //let currentplayer position
-			board.increaseMove();
+		else if (board.map[x-1][y]>=board.PLAYER1 && board.map[x-1][y]<=board.PLAYER2){
+			var option1 = prompt("Do you want to attack(a) or defend(d)?");
+			var option2 = prompt("Do you want to attack(a) or defend(d)?");
+			console.log(option1,option2);
 		}
 	} 
 }	
@@ -95,18 +105,26 @@ function down(){
 		}
 		else if (board.map[x+1][y]>=board.WEAPON1 && board.map[x+1][y]<=board.WEAPON3) 
 		{
-			board.currentPlayer.weapon=board.weapons[board.map[x+1][y]];
-			board.map[x+1][y]=board.currentPlayer.id;
-			board.currentPlayer.setPosition(x+1,y);
-			board.map[x][y]=board.GRASS;
-			board.increaseMove();
+			if (board.currentPlayer.weapon.id == -1) {
+				board.currentPlayer.weapon=board.weapons[board.map[x+1][y]];
+				board.map[x+1][y]=board.currentPlayer.id;
+				board.currentPlayer.setPosition(x+1,y);
+				board.map[x][y]=board.GRASS;
+				board.increaseMove();
+			} 
+			else {
+				board.map[x][y]=board.WEAPONS[board.currentPlayer.weapon.id];
+				board.currentPlayer.weapon=board.weapons[board.map[x+1][y]];
+				board.map[x+1][y]=board.currentPlayer.id;
+				board.currentPlayer.setPosition(x+1,y);
+				board.increaseMove();
+			}
+			
 		}
-		else if(board.currentPlayer.weapon.id!== -1) {
-			board.map[x][y]=board.weapons[board.currentPlayer.weapon.id];
-			board.currentPlayer.weapon=board.weapons[board.map[x+1][y]];
-			board.map[x+1][y]=board.currentPlayer.id;
-			board.currentPlayer.setPosition(x+1,y);
-			board.increaseMove();
+		else if (board.map[x+1][y]>=board.PLAYER1 && board.map[x+1][y]<=board.PLAYER2){
+			var option1 = prompt("Do you want to attack(a) or defend(d)?");
+			var option2 = prompt("Do you want to attack(a) or defend(d)?");
+			console.log(option1,option2);
 		}
 	}
 
@@ -125,18 +143,26 @@ function right(){
 		}
 		else if (board.map[x][y+1]>=board.WEAPON1 && board.map[x][y+1]<=board.WEAPON3) 
 		{
-			board.currentPlayer.weapon=board.weapons[board.map[x][y+1]];
-			board.map[x][y+1]=board.currentPlayer.id;
-			board.currentPlayer.setPosition(x,y+1);
-			board.map[x][y]=board.GRASS;
-			board.increaseMove();
+			if (board.currentPlayer.weapon.id == -1) {
+				board.currentPlayer.weapon=board.weapons[board.map[x][y+1]];
+				board.map[x][y+1]=board.currentPlayer.id;
+				board.currentPlayer.setPosition(x,y+1);
+				board.map[x][y]=board.GRASS;
+				board.increaseMove();
+			}
+			else {
+				board.map[x][y]=board.WEAPONS[board.currentPlayer.weapon.id];
+				board.currentPlayer.weapon=board.weapons[board.map[x][y+1]];
+				board.map[x][y+1]=board.currentPlayer.id;
+				board.currentPlayer.setPosition(x,y+1);
+				board.increaseMove();
+			}
+			
 		}
-		else if(board.currentPlayer.weapon.id!== -1) {
-			board.map[x][y]=board.weapons[board.currentPlayer.weapon.id];
-			board.currentPlayer.weapon=board.weapons[board.map[x][y+1]];
-			board.map[x][y+1]=board.currentPlayer.id;
-			board.currentPlayer.setPosition(x,y+1);
-			board.increaseMove();
+		else if (board.map[x][y+1]>=board.PLAYER1 && board.map[x][y+1]<=board.PLAYER2){
+			var option1 = prompt("Do you want to attack(a) or defend(d)?");
+			var option2 = prompt("Do you want to attack(a) or defend(d)?");
+			console.log(option1,option2);
 		}
 	}
 
@@ -155,19 +181,75 @@ function left(){
 		}
 		else if (board.map[x][y-1]>=board.WEAPON1 && board.map[x][y-1]<=board.WEAPON3) 
 		{
-			board.currentPlayer.weapon=board.weapons[board.map[x][y-1]];
-			board.map[x][y-1]=board.currentPlayer.id;
-			board.currentPlayer.setPosition(x,y-1);
-			board.map[x][y]=board.GRASS;
-			board.increaseMove();
+			if (board.currentPlayer.weapon.id == -1) {
+				board.currentPlayer.weapon=board.weapons[board.map[x][y-1]];
+				board.map[x][y-1]=board.currentPlayer.id;
+				board.currentPlayer.setPosition(x,y-1);
+				board.map[x][y]=board.GRASS;
+				board.increaseMove();
+			}
+			else {
+				board.map[x][y]=board.WEAPONS[board.currentPlayer.weapon.id];
+				board.currentPlayer.weapon=board.weapons[board.map[x][y-1]];
+				board.map[x][y-1]=board.currentPlayer.id;
+				board.currentPlayer.setPosition(x,y-1);
+				board.increaseMove();
+			}
+			
 		}
-		else if(board.currentPlayer.id!== -1) {
-			board.map[x][y]=board.weapons[board.currentPlayer.weapon.id];
-			board.currentPlayer.weapon=board.weapons[board.map[x][y-1]];
-			board.map[x][y-1]=board.currentPlayer.id;
-			board.currentPlayer.setPosition(x,y-1);
-			board.increaseMove();
+
+		else if (board.map[x][y-1]>=board.PLAYER1 && board.map[x][y-1]<=board.PLAYER2){
+			var option1 = prompt("Do you want to attack(a) or defend(d)?");//current player
+			var option2 = prompt("Do you want to attack(a) or defend(d)?");//another player
+			console.log(option1,option2);
+			
+			if (option1 == 'a' && option2 == 'a') {
+				board.player2.hp = board.player2.hp - board.player1.weapon.damage;
+				board.player1.hp = board.player1.hp - board.player2.weapon.damage;
+				board.player2.weapon["damage"]=0;
+				board.player1.weapon["damage"]=0;
+			};
+
+			else if (option1 =='a' && option2 == 'd') {
+				if (board.currentPlayer.id==board.PLAYER1) {
+					board.player2.hp = board.player2.hp - board.player1.weapon.damage * 0.5;
+					board.player1.weapon["damage"]=0;
+				};
+				else if (board.currentPlayer.id==board.PLAYER2) {
+					board.player1.hp = board.player1.hp - board.player2.weapon.damage * 0.5;
+					board.player2.weapon["damage"]=0;
+				};
+			};
+
+			else if (option1 == 'd' && option2 == 'd') {
+				board.player2.hp = board.player2.hp;
+				board.player1.hp = board.player1.hp;
+			};
+
+			else if (option1 == 'd' && option2 == 'a') {
+				if (board.currentPlayer.id==board.PLAYER1) {
+					board.player1.hp = board.player1.hp - board.player2.weapon.damage * 0.5;
+					board.player2.weapon["damage"]=0;
+				};
+				else if (board.currentPlayer.id==board.PLAYER2) {
+					board.player2.hp = board.player2.hp - board.player1.weapon.damage * 0.5;
+					board.player1.weapon["damage"]=0;
+				};
+			};
+
+			var player2=document.getElementById("player2");
+			var damagep1=document.getElementById("weaponp1");
+			var player1=document.getElementById("player1");
+			var damagep2=document.getElementById("weaponp2");
+			player1.innerHTML=board.player1.hp;
+			damagep2.innerHTML=board.player2.weapon.damage;
+			player2.innerHTML=board.player2.hp;
+			damagep1.innerHTML=board.player1.weapon.damage;
+
 		}
+	
 	}
-}	
+}
+
+
 
