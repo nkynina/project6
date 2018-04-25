@@ -1,0 +1,65 @@
+body {
+  margin: 10px;
+  background-color: grey;
+}
+
+
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px; 
+  grid-column-gap: 0px;
+  background-color: #fff;
+  height: 500px;
+
+}
+
+.box {
+  background-color: #444;
+  color: #fff;
+  border-radius: 0px;
+  font-size: 100%;
+  background: url(grass.PNG); background-repeat: repeat;
+}
+
+.grass {
+  background: url(grass.PNG); background-repeat: no-repeat;text-align: center;
+}
+
+.stone {
+  background: url(stone.PNG); background-repeat: no-repeat;text-align: center;
+}
+
+.weapon1 {
+  background: url(weapon1.PNG); background-repeat: no-repeat;text-align: center;
+}
+
+.weapon2 {
+  background: url(weapon2.PNG); background-repeat: no-repeat;text-align: center;
+}
+
+.weapon3 {
+  background: url(weapon3.PNG); background-repeat: no-repeat;text-align: center;
+}
+
+.player1 {
+  background: url(player1.PNG); background-repeat: no-repeat;text-align: center;
+}
+
+.player2 {
+  background: url(player2.PNG); background-repeat: no-repeat;text-align: center;
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
+
+
+
+
+
+
+
+
+

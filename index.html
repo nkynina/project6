@@ -3,6 +3,9 @@
 <head>
 	<title></title>
 	<link rel="stylesheet" type="text/css" href="./style.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"> 
+
+  
 </head>
 <body>
 	<button onclick="start()">Start</button>
@@ -13,11 +16,21 @@
 	
 	<h4>Player1 health: <span id="player1"> 100 </span></h4> <h4>Player1 damage: <span id="weaponp1">Damage</span></h4> 
 	<h4>Player2 health: <span id="player2"> 100 </span></h4> <h4>Player2 damage: <span id="weaponp2">Damage</span></h4> 
-
+	
+	
+       
 
 	<div class="wrapper" id="canvas">
 	</div>
 	
+
+	<div id="dialog-message" title="Choose your action">
+	  <p>
+	    Do you want to attack or defend?
+	  </p>
+  </div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="./map.js"></script>
 <script type="text/javascript" src="./project6.js"></script>
 

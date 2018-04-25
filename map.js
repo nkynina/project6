@@ -4,7 +4,7 @@ var Player = function(playerid,hp) {
 	this.X;
 	this.Y;
 	this.weapon= new Weapon(-1,0);
-
+	this.action;
 	this.setPosition=function(x,y) {
 		this.X=x;
 		this.Y=y;
@@ -33,6 +33,11 @@ var Board = function(size) {
 	this.WEAPON1 = 2;
 	this.WEAPON2 = 3;
 	this.WEAPON3 = 4;
+	this.WEAPONS = {
+		2:this.WEAPON1,
+		3:this.WEAPON2,
+		4:this.WEAPON3
+	} 
 	this.PLAYER1 = 5;
 	this.PLAYER2 = 6;
 	this.player1 = new Player(this.PLAYER1,100);
@@ -134,12 +139,24 @@ var Board = function(size) {
 	this.increaseMove=function() {
 		this.currentPlayerMoves++;
 		if (this.currentPlayerMoves>2) {
-			this.currentPlayerMoves = 0;
-			if (this.currentPlayer.id==this.PLAYER1) {
-				this.currentPlayer=this.player2;
-			} else {
-				this.currentPlayer=this.player1;
-			}
+			this.resetMove();
+		}
+	}
+
+	this.resetMove=function() {
+		this.currentPlayerMoves = 0;
+		if (this.currentPlayer.id==this.PLAYER1) {
+			this.currentPlayer=this.player2;
+		} else {
+			this.currentPlayer=this.player1;
+		}
+	}
+	this.otherPlayer = function() {
+		if(this.currentPlayer.id==this.player1.id) {
+			return (this.player2);
+		}
+		else{
+			return(this.player1);
 		}
 	}
 }

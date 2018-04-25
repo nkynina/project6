@@ -1,4 +1,27 @@
 var board;
+
+$("#dialog-message").hide();
+
+  function action() {
+    $( "#dialog-message" ).dialog({
+      modal: true,
+      dialogClass: "no-close",
+      buttons: {
+        Attack: function() {
+       	board.currentPlayer.attack = true;
+          $( this ).dialog( "close" );
+       
+        },
+        Defend: function() {
+        board.currentPlayer.attack = false;
+          $( this ).dialog( "close" );
+  
+        }
+      }
+    });
+  }
+
+
 function start() {
 	board= new Board(10);
 	board.start();
@@ -84,9 +107,64 @@ function up(){
 			
 		}
 		else if (board.map[x-1][y]>=board.PLAYER1 && board.map[x-1][y]<=board.PLAYER2){
-			var option1 = prompt("Do you want to attack(a) or defend(d)?");
-			var option2 = prompt("Do you want to attack(a) or defend(d)?");
-			console.log(option1,option2);
+			action();
+			action();
+		
+
+			if (board.currentPlayer.attack = true && board.otherPlayer().attack = true) {
+				board.currentPlayer.hp = board.currentPlayer.hp - board.otherPlayer().weapon.damage;
+				board.otherPlayer().hp = board.otherPlayer().hp - board.currentPlayer.weapon.damage;				
+				board.currentPlayer.weapon["damage"]=0;
+				board.otherPlayer().weapon["damage"]=0;
+			}
+
+			else if (board.currentPlayer.attack = true && board.otherPlayer().attack = false) {				
+				board.otherPlayer().hp = board.otherPlayer().hp - board.currentPlayer.weapon.damage * 0.5;				
+				board.currentPlayer.weapon["damage"]=0;			
+			}
+
+			else if (board.currentPlayer.attack = false && board.otherPlayer().attack = true) {
+				board.currentPlayer.hp = board.currentPlayer.hp - board.otherPlayer.weapon.damage * 0.5;				
+				board.otherPlayer().weapon["damage"]=0;	
+			}
+
+			else if (board.currentPlayer.attack = false && board.otherPlayer().attack = false) {
+				board.currentPlayer.hp = board.currentPlayer.hp;
+				board.otherPlayer().hp = board.otherPlayer().hp;
+			}
+
+			var player2=document.getElementById("player2");
+			var damagep1=document.getElementById("weaponp1");
+			var player1=document.getElementById("player1");
+			var damagep2=document.getElementById("weaponp2");
+			player1.innerHTML=board.player1.hp;
+			damagep2.innerHTML=board.player2.weapon.damage;
+			player2.innerHTML=board.player2.hp;
+			damagep1.innerHTML=board.player1.weapon.damage;
+			var usedWeapons = [board.player1.weapon.id,board.player2.weapon.id];
+			for (var i=0; i<usedWeapons.length; i++) {
+				var j = 0;
+	    		while (j<1)
+	    		{
+					var x = Math.floor(Math.random() * this.size);//generate x = random number between 0 to size -1
+					var y = Math.floor(Math.random() * this.size);//generate y = random number between 0 to size -1
+
+					if (this.map[x][y] == this.GRASS) {
+						board.map[x][y]=board.weapons[i]; 
+						board.weapons[board.weapons[i]].setPosition(x,y);
+						j++;
+            		}
+            	}
+			}
+
+			if (board.player1.hp<=0) {
+				alert("Player2 wins!");
+			}
+			else if(board.player2.hp<=0) {
+				alert("Player1 wins!");
+			}
+
+		
 		}
 	} 
 }	
@@ -122,9 +200,74 @@ function down(){
 			
 		}
 		else if (board.map[x+1][y]>=board.PLAYER1 && board.map[x+1][y]<=board.PLAYER2){
-			var option1 = prompt("Do you want to attack(a) or defend(d)?");
-			var option2 = prompt("Do you want to attack(a) or defend(d)?");
-			console.log(option1,option2);
+			 document.getElementById('myModal').innerHTML;
+			 document.getElementById('myModal').innerHTML;
+			
+			if (document.getElementById('attack1').checked && document.getElementById('attack2').checked) {
+				board.player2.hp = board.player2.hp - board.player1.weapon.damage;
+				board.player1.hp = board.player1.hp - board.player2.weapon.damage;
+				board.player2.weapon["damage"]=0;
+				board.player1.weapon["damage"]=0;
+			}
+
+			else if (document.getElementById('attack1').checked && document.getElementById('defend2').checked) {
+				if (board.currentPlayer.id==board.PLAYER1) {
+					board.player2.hp = board.player2.hp - board.player1.weapon.damage * 0.5;
+					board.player1.weapon["damage"]=0;
+				}
+				else if (board.currentPlayer.id==board.PLAYER2) {
+					board.player1.hp = board.player1.hp - board.player2.weapon.damage * 0.5;
+					board.player2.weapon["damage"]=0;
+				}
+			}
+
+			else if (document.getElementById('defend1').checked && document.getElementById('defend2').checked) {
+				board.player2.hp = board.player2.hp;
+				board.player1.hp = board.player1.hp;
+			}
+
+			else if (document.getElementById('defend1').checked && document.getElementById('attack2').checked) {
+				if (board.currentPlayer.id==board.PLAYER1) {
+					board.player1.hp = board.player1.hp - board.player2.weapon.damage * 0.5;
+					board.player2.weapon["damage"]=0;
+				}
+				else if (board.currentPlayer.id==board.PLAYER2) {
+					board.player2.hp = board.player2.hp - board.player1.weapon.damage * 0.5;
+					board.player1.weapon["damage"]=0;
+				}
+			}
+
+			var player2=document.getElementById("player2");
+			var damagep1=document.getElementById("weaponp1");
+			var player1=document.getElementById("player1");
+			var damagep2=document.getElementById("weaponp2");
+			player1.innerHTML=board.player1.hp;
+			damagep2.innerHTML=board.player2.weapon.damage;
+			player2.innerHTML=board.player2.hp;
+			damagep1.innerHTML=board.player1.weapon.damage;
+			var usedWeapons = [board.player1.weapon.id,board.player2.weapon.id];
+			
+			for (var i=0; i<usedWeapons.length; i++) {
+				var j = 0;
+	    		while (j<1)
+	    		{
+					var x = Math.floor(Math.random() * this.size);//generate x = random number between 0 to size -1
+					var y = Math.floor(Math.random() * this.size);//generate y = random number between 0 to size -1
+
+					if (this.map[x][y] == this.GRASS) {
+						board.map[x][y]=board.weapons[i]; 
+						board.weapons[board.weapons[i]].setPosition(x,y);
+						j++;
+            		}
+            	}
+			}
+
+			if (board.player1.hp<=0) {
+				alert("Player2 wins!");
+			}
+			else if(board.player2.hp<=0) {
+				alert("Player1 wins!");
+			}
 		}
 	}
 
@@ -160,9 +303,74 @@ function right(){
 			
 		}
 		else if (board.map[x][y+1]>=board.PLAYER1 && board.map[x][y+1]<=board.PLAYER2){
-			var option1 = prompt("Do you want to attack(a) or defend(d)?");
-			var option2 = prompt("Do you want to attack(a) or defend(d)?");
-			console.log(option1,option2);
+			document.getElementById('myModal').innerHTML;
+			document.getElementById('myModal').innerHTML;
+			
+
+			if (document.getElementById('attack1').checked && document.getElementById('attack2').checked) {
+				board.player2.hp = board.player2.hp - board.player1.weapon.damage;
+				board.player1.hp = board.player1.hp - board.player2.weapon.damage;
+				board.player2.weapon["damage"]=0;
+				board.player1.weapon["damage"]=0;
+			}
+
+			else if (document.getElementById('attack1').checked && document.getElementById('defend2').checked) {
+				if (board.currentPlayer.id==board.PLAYER1) {
+					board.player2.hp = board.player2.hp - board.player1.weapon.damage * 0.5;
+					board.player1.weapon["damage"]=0;
+				}
+				else if (board.currentPlayer.id==board.PLAYER2) {
+					board.player1.hp = board.player1.hp - board.player2.weapon.damage * 0.5;
+					board.player2.weapon["damage"]=0;
+				}
+			}
+
+			else if (document.getElementById('defend1').checked && document.getElementById('defend2').checked) {
+				board.player2.hp = board.player2.hp;
+				board.player1.hp = board.player1.hp;
+			}
+
+			else if (document.getElementById('defend1').checked && document.getElementById('attack2').checked) {
+				if (board.currentPlayer.id==board.PLAYER1) {
+					board.player1.hp = board.player1.hp - board.player2.weapon.damage * 0.5;
+					board.player2.weapon["damage"]=0;
+				}
+				else if (board.currentPlayer.id==board.PLAYER2) {
+					board.player2.hp = board.player2.hp - board.player1.weapon.damage * 0.5;
+					board.player1.weapon["damage"]=0;
+				}
+			}
+
+			var player2=document.getElementById("player2");
+			var damagep1=document.getElementById("weaponp1");
+			var player1=document.getElementById("player1");
+			var damagep2=document.getElementById("weaponp2");
+			player1.innerHTML=board.player1.hp;
+			damagep2.innerHTML=board.player2.weapon.damage;
+			player2.innerHTML=board.player2.hp;
+			damagep1.innerHTML=board.player1.weapon.damage;
+			var usedWeapons = [board.player1.weapon.id,board.player2.weapon.id];
+			for (var i=0; i<usedWeapons.length; i++) {
+				var j = 0;
+	    		while (j<1)
+	    		{
+					var x = Math.floor(Math.random() * this.size);//generate x = random number between 0 to size -1
+					var y = Math.floor(Math.random() * this.size);//generate y = random number between 0 to size -1
+
+					if (this.map[x][y] == this.GRASS) {
+						board.map[x][y]=board.weapons[i]; 
+						board.weapons[board.weapons[i]].setPosition(x,y);
+						j++;
+            		}
+            	}
+			}
+			if (board.player1.hp<=0) {
+				alert("Player2 wins!");
+			}
+			else if(board.player2.hp<=0) {
+				alert("Player1 wins!");
+			}
+
 		}
 	}
 
@@ -199,43 +407,42 @@ function left(){
 		}
 
 		else if (board.map[x][y-1]>=board.PLAYER1 && board.map[x][y-1]<=board.PLAYER2){
-			var option1 = prompt("Do you want to attack(a) or defend(d)?");//current player
-			var option2 = prompt("Do you want to attack(a) or defend(d)?");//another player
-			console.log(option1,option2);
-			
-			if (option1 == 'a' && option2 == 'a') {
+			document.getElementById('myModal').innerHTML;
+			document.getElementById('myModal').innerHTML;
+
+			if (document.getElementById('attack1').checked && document.getElementById('attack2').checked) {
 				board.player2.hp = board.player2.hp - board.player1.weapon.damage;
 				board.player1.hp = board.player1.hp - board.player2.weapon.damage;
 				board.player2.weapon["damage"]=0;
 				board.player1.weapon["damage"]=0;
-			};
+			}
 
-			else if (option1 =='a' && option2 == 'd') {
+			else if (document.getElementById('attack1').checked && document.getElementById('defend2').checked) {
 				if (board.currentPlayer.id==board.PLAYER1) {
 					board.player2.hp = board.player2.hp - board.player1.weapon.damage * 0.5;
 					board.player1.weapon["damage"]=0;
-				};
+				}
 				else if (board.currentPlayer.id==board.PLAYER2) {
 					board.player1.hp = board.player1.hp - board.player2.weapon.damage * 0.5;
 					board.player2.weapon["damage"]=0;
-				};
-			};
+				}
+			}
 
-			else if (option1 == 'd' && option2 == 'd') {
+			else if (document.getElementById('defend1').checked && document.getElementById('defend2').checked) {
 				board.player2.hp = board.player2.hp;
 				board.player1.hp = board.player1.hp;
-			};
+			}
 
-			else if (option1 == 'd' && option2 == 'a') {
+			else if (document.getElementById('defend1').checked && document.getElementById('attack2').checked) {
 				if (board.currentPlayer.id==board.PLAYER1) {
 					board.player1.hp = board.player1.hp - board.player2.weapon.damage * 0.5;
 					board.player2.weapon["damage"]=0;
-				};
+				}
 				else if (board.currentPlayer.id==board.PLAYER2) {
 					board.player2.hp = board.player2.hp - board.player1.weapon.damage * 0.5;
 					board.player1.weapon["damage"]=0;
-				};
-			};
+				}
+			}
 
 			var player2=document.getElementById("player2");
 			var damagep1=document.getElementById("weaponp1");
@@ -245,6 +452,28 @@ function left(){
 			damagep2.innerHTML=board.player2.weapon.damage;
 			player2.innerHTML=board.player2.hp;
 			damagep1.innerHTML=board.player1.weapon.damage;
+			
+			var usedWeapons = [board.player1.weapon.id,board.player2.weapon.id];
+			for (var i=0; i<usedWeapons.length; i++) {
+				var j = 0;
+	    		while (j<1)
+	    		{
+					var x = Math.floor(Math.random() * board.size);//generate x = random number between 0 to size -1
+					var y = Math.floor(Math.random() * board.size);//generate y = random number between 0 to size -1
+
+					if (board.map[x][y] == board.GRASS) {
+						board.map[x][y]=board.weapons[i]; 
+						board.weapons[board.weapons[i]].setPosition(x,y);
+						j++;
+            		}
+            	}
+			}
+			if (board.player1.hp<=0) {
+				alert("Player2 wins!");
+			}
+			else if(board.player2.hp<=0) {
+				alert("Player1 wins!");
+			}
 
 		}
 	
